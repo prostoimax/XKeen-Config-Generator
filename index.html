@@ -224,7 +224,22 @@
                                         "headers": {
                                             "Host": params.get("host") || ""
                                         }
-                                    } : undefined
+                                    } : undefined,
+                                    "xhttpSettings": params.get("type") === "xhttp" ? (() => {
+                                        const xhttpConfig = {
+                                            "host": params.get("host") || "",
+                                            "mode": params.get("mode") || "auto",
+                                            "path": params.get("path") || "/"
+                                        };
+                                        if (params.get("extra")) {
+                                            try {
+                                                xhttpConfig.extra = JSON.parse(params.get("extra"));
+                                            } catch (e) {
+                                                console.error("Error parsing xhttp extra settings:", e);
+                                            }
+                                        }
+                                        return xhttpConfig;
+                                    })() : undefined
                                 }
                             },
                             {
